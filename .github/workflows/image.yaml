@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-
+      - feature/build-multi-arch-images
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -23,6 +23,12 @@ jobs:
         working-directory: ./src/github.com/argoproj/argo-cd
         id: image
 
+      # setup buildx
+      - name: Docker Setup Buildx
+        # You may pin to the exact commit or the version.
+        # uses: docker/setup-buildx-action@154c24e1f33dbb5865a021c99f1318cfebf27b32
+        uses: docker/setup-buildx-action@v1.1.1
+        
       # build
       - run: |
           docker images -a --format "{{.ID}}" | xargs -I {} docker rmi {}
